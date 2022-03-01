@@ -6,22 +6,30 @@ on:
     - master
   
   workflow_dispatch:
+    branches:
+    - master
+
 jobs:
   update-s3:
     runs-on: ubuntu-latest
+  
     steps:
-    - uses: actions/checkout@master
-    - uses: actions/setup-node@v2
+    - uses: actions/checkout@v2
+    
+    # instalar node
+    - name: Setup Node.js environment
+    - uses: actions/setup-node@v2.2.0
       with:
-        node-version: 14
-    - uses: jakejarvis/s3-sync-action@master
+        node-version: 14.x
     
     - name: Install dependencies
-      run: yarn install
-    
+      run: npm install
+
     - name: generate out build
       run: yarn build
-      
+
+    - name: update s3
+    - uses: jakejarvis/s3-sync-action@master  
       with:
         args: --acl public-read --follow-symlinks --delete --exclude '.git/*' --exclude '.github/*'
       env:
