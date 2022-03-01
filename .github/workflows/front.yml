@@ -1,0 +1,7 @@
+name: Upload Front Website
+
+on:
+  push:
+    branches:
+    - master
+
