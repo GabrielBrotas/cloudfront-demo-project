@@ -104,39 +104,54 @@ function PricingContent() {
         elevation={0}
         sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
       >
-        <Toolbar sx={{ flexWrap: 'wrap' }}>
-          <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-            Company name
-          </Typography>
-          <nav>
-            <Link
-              variant="button"
-              color="text.primary"
-              href="#"
-              sx={{ my: 1, mx: 1.5 }}
-            >
-              Features
-            </Link>
-            <Link
-              variant="button"
-              color="text.primary"
-              href="#"
-              sx={{ my: 1, mx: 1.5 }}
-            >
-              Enterprise
-            </Link>
-            <Link
-              variant="button"
-              color="text.primary"
-              href="#"
-              sx={{ my: 1, mx: 1.5 }}
-            >
-              Support
-            </Link>
-          </nav>
-          <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-            Login
-          </Button>
+        <Toolbar sx={{ 
+          flexWrap: 'wrap', 
+          alignItems:'center', 
+          justifyContent: 'space-between', 
+          display: 'flex', 
+          maxWidth: 1080,
+          width: '100%',
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        }}>
+          <div>
+            <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+              Company name
+            </Typography>
+          </div>
+
+          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+            <nav>
+              <Link
+                variant="button"
+                color="text.primary"
+                href="/auth/album"
+                sx={{ my: 1, mx: 1.5 }}
+              >
+                Auth Page
+              </Link>
+              <Link
+                variant="button"
+                color="text.primary"
+                href="#"
+                sx={{ my: 1, mx: 1.5 }}
+              >
+                Enterprise
+              </Link>
+              <Link
+                variant="button"
+                color="text.primary"
+                href="#"
+                sx={{ my: 1, mx: 1.5 }}
+              >
+                Support
+              </Link>
+            </nav>
+            <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+              Logout
+            </Button>
+
+          </div>
         </Toolbar>
       </AppBar>
       {/* Hero unit */}
