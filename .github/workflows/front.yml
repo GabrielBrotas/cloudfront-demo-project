@@ -21,29 +21,17 @@ jobs:
       uses: actions/setup-node@v2.2.0
       with:
         node-version: 14.x
-    
 
-    # front next js --------------------
+    # front react --------------------
     - name: Install dependencies
       run: |
-        cd front-next
+        cd front-react
         npm install
 
     - name: Generate out build
       run: |
-        cd front-next
+        cd front-react
         npm run-script build
-
-    # front react --------------------
-    # - name: Install dependencies
-    #   run: |
-    #     cd front-react
-    #     npm install
-
-    # - name: Generate out build
-    #   run: |
-    #     cd front-react
-    #     npm run-script build
 
     - name: Update s3
       uses: jakejarvis/s3-sync-action@master  
