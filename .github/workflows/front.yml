@@ -23,10 +23,14 @@ jobs:
         node-version: 14.x
     
     - name: Install dependencies
-      run: npm install
-
+      run: |
+        cd front
+        npm install
+        
     - name: generate out build
-      run: yarn build
+      run: |
+        cd front
+        npm run-script build
 
     - name: update s3
       uses: jakejarvis/s3-sync-action@master  
