@@ -22,18 +22,25 @@ jobs:
       with:
         node-version: 14.x
     
-    - name: Install dependencies
-      run: |
-        cd front
-        npm install
 
-    # front next js
+    # front next js --------------------
+
+    # - name: Install dependencies
+    #   run: |
+    #     cd front-next
+    #     npm install
+
     # - name: Generate out build
     #   run: |
     #     cd front-next
     #     npm run-script build
 
-    # front react
+    # front react --------------------
+    - name: Install dependencies
+      run: |
+        cd front-react
+        npm install
+
     - name: Generate out build
       run: |
         cd front-react
@@ -49,7 +56,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-east-1'   # optional: defaults to us-east-1
         # SOURCE_DIR: './front-next/out' # nextjs
-        # SOURCE_DIR: './front-react/build' # reactjs
+        SOURCE_DIR: './front-react/build' # reactjs
 
     - name: Invalidate CloudFront
       uses: chetan/invalidate-cloudfront-action@v2
