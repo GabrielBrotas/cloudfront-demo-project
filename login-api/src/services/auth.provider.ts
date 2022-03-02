@@ -17,5 +17,4 @@ export class AuthProvider {
       expiresIn: '10d',
     });
   }
-
 }
