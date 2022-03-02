@@ -14,24 +14,25 @@ jobs:
     runs-on: ubuntu-latest
   
     steps:
-    - uses: actions/checkout@v2 # pegar a versao mais atualizada do codigo
+    - name: Get Code Latest Version
+      uses: actions/checkout@v2 
     
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2.2.0
-      with:
-        node-version: 14.x
+    # - name: Setup Node.js environment
+    #   uses: actions/setup-node@v2.2.0
+    #   with:
+    #     node-version: 14.x
 
-    - name: Install dependencies
-      run: |
-        cd login-api
-        npm install
+    # - name: Install dependencies
+    #   run: |
+    #     cd login-api
+    #     npm install
     
-    - name: Run build
-      run: |
-        cd login-api
-        npm run build
+    # - name: Run build
+    #   run: |
+    #     cd login-api
+    #     npm run build
       
-    - name: Copy project to ec2 machine
+    - name: Copy project to EC2 machine
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -41,22 +42,23 @@ jobs:
         source: ".,!node_modules"
         target: "~/app"
       
-    - name: Install dependencies on ec2 and restart server
+    - name: Install dependencies on EC2 and restart docker
       uses: appleboy/ssh-action@master
       with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            cd ~/app/login-api
-            npm install
-            
-            sudo service docker start
-            sudo docker rm -f $(sudo docker ps -a -q)
-            sudo docker volume rm $(sudo docker volume ls -q)
-            sudo docker image rm $(sudo docker image ls -q)
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd ~/app/login-api
+          fuser -k 4000/tcp
+          npm install
+          
+          sudo service docker start
+          sudo docker rm -f $(sudo docker ps -a -q)
+          sudo docker volume rm $(sudo docker volume ls -q)
+          sudo docker image rm $(sudo docker image ls -q)
 
-            sudo docker build -t loginapi-image .
-            sudo docker container run -d -p 4000:4000 --name c-loginapi loginapi-image
+          sudo docker build -t loginapi-image .
+          sudo docker container run -d -p 4000:4000 --name c-loginapi loginapi-image
 
