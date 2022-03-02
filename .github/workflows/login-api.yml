@@ -10,11 +10,11 @@ on:
     - master
 
 jobs:
-  update-ecr:
+  deploy-api:
     runs-on: ubuntu-latest
   
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v2 # pegar a versao mais atualizada do codigo
     
     # instalar node
     - name: Setup Node.js environment
@@ -22,34 +22,36 @@ jobs:
       with:
         node-version: 14.x
 
-    # front react --------------------
+    # instalar as dependencias          
     - name: Install dependencies
-      run: |
-        cd front-react
-        npm install
-
-    - name: Generate out build
-      run: |
-        cd front-react
-        npm run-script build
-
-    - name: Update s3
-      uses: jakejarvis/s3-sync-action@master  
+      run: npm install
+    
+    executar a build
+    - name: Run build
+      run: npm run-script build
+      
+    # copy code to ec2 machine    
+    - name: copy dist to digital ocean
+      uses: appleboy/scp-action@master
       with:
-        args: --follow-symlinks --delete --exclude '.git/*' --exclude '.github/*'
-      env:
-        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: 'us-east-1'   # optional: defaults to us-east-1
-        SOURCE_DIR: './front-react/build' # reactjs
-
-    - name: Invalidate CloudFront
-      uses: chetan/invalidate-cloudfront-action@v2
-      env:
-        DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION }}
-        PATHS: "/*"
-        AWS_REGION: "us-east-1"
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        port: ${{ secrets.SSH_PORT }}
+        key: ${{ secrets.SSH_KEY }}
+        source: ".,!node_modules"
+        target: "~/app/cloudfront-demo-project/login-api"
+      
+    # install dependencies
+    - name: Install dependencies on digital ocean and restart server
+      uses: appleboy/ssh-action@master
+      with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/app/cloudfront-demo-project/login-api
+            npm install
+            pm2 kill
+            pm2 start dist/main.js —name loginapi
 

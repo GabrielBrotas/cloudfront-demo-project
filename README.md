@@ -13,11 +13,7 @@
     npm install
     echo "JWT_SECRET_KEY=<Secretkey>" > .env
     npm run build
-    npm install -g pm2
-    pm2 start dist/main.js --name loginapi
-
-    pm2 list // ver os serviços
-    pm2 startup systemd // vai gerar um comando e vamos copiar e colar este comando assim o pm2 vai ser configurado
-    pm2 logs
-    pm2 monit // podemos monitar o que esta acontecendo quando chamamos alguma rota pelo insomnia
+    
+    sudo docker build -t loginapi-image .
+    sudo docker container run -d -p 4000:4000 --name c-loginapi loginapi-image
 ```
