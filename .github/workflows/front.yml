@@ -4,6 +4,9 @@ on:
   # push:
   #   branches:
   #   - master
+  push:
+    tags:
+      - '*'
   
   workflow_dispatch:
     branches:
