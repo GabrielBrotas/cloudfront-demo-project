@@ -1,13 +1,13 @@
 name: Upload EC2 API
 
 on:
-  # tags:
-  #   - v1.*
-  #   - v2.*
+  push:
+    tags:
+      - '*'
 
   workflow_dispatch:
     branches:
-    - master
+      - master
 
 jobs:
   deploy-api:
