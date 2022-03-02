@@ -59,7 +59,7 @@ jobs:
           sudo docker volume rm $(sudo docker volume ls -q)
           sudo docker image rm $(sudo docker image ls -q)
 
-          echo $'ENVIRONMENT=dev \nJWT_SECRET_KEY={{ secrets.JWT_SECRET_KEY }}' > .env
+          echo $'ENVIRONMENT=dev \nJWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}' > .env
           sudo docker build -t loginapi-image .
           sudo docker container run -d -p 4000:4000 --name c-loginapi loginapi-image
 
