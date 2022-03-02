@@ -13,6 +13,7 @@ export class AppController {
   async enviromnets() {
     return {
       JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
+      ENVIROMNENT: process.env.ENVIROMNENT,
     };
   }
 }
