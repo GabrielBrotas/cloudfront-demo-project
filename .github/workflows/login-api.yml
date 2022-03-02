@@ -1,4 +1,4 @@
-name: Upload Front Website
+name: Upload EC2 API
 
 on:
   tags:
