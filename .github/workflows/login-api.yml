@@ -24,11 +24,15 @@ jobs:
 
     # instalar as dependencias          
     - name: Install dependencies
-      run: npm install
+      run: |
+        cd login-api
+        npm install
     
     # executar a build
     - name: Run build
-      run: npm run-script build
+      run: |
+        cd login-api
+        npm run build
       
     # copy code to ec2 machine    
     - name: copy dist to digital ocean
