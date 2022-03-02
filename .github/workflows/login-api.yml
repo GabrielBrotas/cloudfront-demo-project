@@ -31,7 +31,7 @@ jobs:
         cd login-api
         npm run build
       
-    - name: copy dist to ec2 machine
+    - name: Copy project to ec2 machine
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -41,7 +41,7 @@ jobs:
         source: ".,!node_modules"
         target: "~/app"
       
-    - name: Install dependencies on digital ocean and restart server
+    - name: Install dependencies on ec2 and restart server
       uses: appleboy/ssh-action@master
       with:
           host: ${{ secrets.SSH_HOST }}
@@ -51,6 +51,12 @@ jobs:
           script: |
             cd ~/app/login-api
             npm install
-            pm2 kill
-            pm2 start dist/main.js —name loginapi
+            
+            sudo service docker start
+            sudo docker rm -f $(sudo docker ps -a -q)
+            sudo docker volume rm $(sudo docker volume ls -q)
+            sudo docker image rm $(sudo docker image ls -q)
+
+            sudo docker build -t loginapi-image .
+            sudo docker container run -d -p 4000:4000 --name c-loginapi loginapi-image
 
