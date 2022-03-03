@@ -16,4 +16,11 @@ export class AppController {
       ENVIROMNENT: process.env.ENVIROMNENT,
     };
   }
+
+  @Get('/health-check')
+  async healthcheck() {
+    return {
+      success: true,
+    };
+  }
 }
