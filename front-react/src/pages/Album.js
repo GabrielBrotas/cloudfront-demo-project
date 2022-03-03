@@ -37,6 +37,18 @@ const theme = createTheme();
 export default function Album() {
   const navigate = useNavigate()
 
+  const logout = () => {
+    localStorage.removeItem('access_token')
+    localStorage.removeItem('user')
+    navigate('/')
+  }
+
+  React.useEffect(() => {
+    if(!localStorage.getItem("access_token")) {
+      navigate('/')
+    }
+  }, [navigate])
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -69,9 +81,7 @@ export default function Album() {
           </div>
 
           <Button href="#" color="secondary" variant="contained" sx={{ my: 1, mx: 1.5 }}
-            onClick={() => {
-              navigate('/')
-            }}
+            onClick={logout}
           >
             Logout
           </Button>

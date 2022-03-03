@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useNavigate} from 'react-router-dom'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -94,6 +95,20 @@ const footers = [
 ];
 
 function PricingContent() {
+  const navigate = useNavigate()
+
+  const logout = () => {
+      localStorage.removeItem('access_token')
+      localStorage.removeItem('user')
+      navigate('/')
+  }
+
+  React.useEffect(() => {
+    if(!localStorage.getItem("access_token")) {
+      navigate('/')
+    }
+  }, [navigate])
+
   return (
     <React.Fragment>
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -147,7 +162,7 @@ function PricingContent() {
                 Support
               </Link>
             </nav>
-            <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+            <Button href="#" variant="outlined" sx={{ my: 1, mx: 1.5 }} onClick={() => logout()}>
               Logout
             </Button>
 

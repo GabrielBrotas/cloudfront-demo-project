@@ -12,6 +12,8 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { API_URL } from '../config/constants'
+
 
 function Copyright(props) {
   return (
@@ -30,17 +32,36 @@ function Copyright(props) {
 export default function SignIn() {
   const navigate = useNavigate()
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    
-    navigate('pricing')
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      
+      const {user, access_token} = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: data.get('username'),
+          password: data.get('password'),
+        }),
+      }).then(res => res.json())
+  
+      if(!user || !access_token) return
+
+      await localStorage.setItem("access_token", access_token)
+      await localStorage.setItem("user", JSON.stringify(user))
+      navigate('pricing')
+
+    } catch(error) {
+      console.log(error)
+    }
   };
+
+  React.useEffect(() => {
+    localStorage.getItem("access_token") && navigate('pricing')
+  }, [navigate])
 
   return (
       <Container component="main" maxWidth="xs">
@@ -64,10 +85,10 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
