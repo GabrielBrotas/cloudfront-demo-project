@@ -7,7 +7,10 @@ provider:
   runtime: nodejs14.x
   timeout: 5
   memorySize: 128
-  
+  	
+  httpApi:
+    cors: true
+
 package:
    individually: true
 
@@ -19,7 +22,6 @@ functions:
       - httpApi:
           method: post
           path: /auth/login
-          cors: true
     role: LambdaReadDynamoTable
     environment:
       TABLE_NAME: CDAUsers
@@ -36,7 +38,6 @@ functions:
       - httpApi:
           method: post
           path: /auth/register
-          cors: true
     role: LambdaWriteDynamoTable
     environment:
       TABLE_NAME: CDAUsers
@@ -52,7 +53,6 @@ functions:
       - httpApi:
           method: get
           path: /auth/profile
-          cors: true
     role: LambdaReadDynamoTable
     environment: 
       TABLE_NAME: CDAUsers
