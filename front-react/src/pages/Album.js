@@ -43,11 +43,11 @@ export default function Album() {
     navigate('/')
   }
 
-  React.useEffect(() => {
-    if(!localStorage.getItem("access_token")) {
-      navigate('/')
-    }
-  }, [navigate])
+  // React.useEffect(() => {
+  //   if(!localStorage.getItem("access_token")) {
+  //     navigate('/')
+  //   }
+  // }, [navigate])
 
   return (
     <ThemeProvider theme={theme}>
