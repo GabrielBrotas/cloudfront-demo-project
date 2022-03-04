@@ -32,7 +32,7 @@ function Copyright(props) {
 
 export default function SignIn() {
   const navigate = useNavigate()
-  const [cookies, setCookie] = useCookies(['access_token']);
+  const [, setCookie] = useCookies(['access_token']);
 
   const handleSubmit = async (event) => {
     try {
