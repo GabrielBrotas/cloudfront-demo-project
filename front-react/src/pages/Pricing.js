@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
+import { useCookies } from 'react-cookie';
 
 function Copyright(props) {
   return (
@@ -96,11 +97,11 @@ const footers = [
 
 function PricingContent() {
   const navigate = useNavigate()
+  const [cookies, setCookie] = useCookies(['access_token']);
 
   const logout = () => {
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('user')
-      navigate('/')
+    setCookie('access_token', '', { path: '/' })
+    navigate('/')
   }
 
   // React.useEffect(() => {

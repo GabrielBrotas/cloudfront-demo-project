@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { API_URL } from '../config/constants'
+import { useCookies } from 'react-cookie';
 
 
 function Copyright(props) {
@@ -31,6 +32,7 @@ function Copyright(props) {
 
 export default function SignIn() {
   const navigate = useNavigate()
+  const [cookies, setCookie] = useCookies(['access_token']);
 
   const handleSubmit = async (event) => {
     try {
@@ -50,10 +52,9 @@ export default function SignIn() {
   
       if(!user || !access_token) return
 
-      await localStorage.setItem("access_token", access_token)
-      await localStorage.setItem("user", JSON.stringify(user))
-      navigate('pricing')
+      setCookie('access_token', access_token, { path: '/' })
 
+      navigate('pricing')
     } catch(error) {
       console.log(error)
     }

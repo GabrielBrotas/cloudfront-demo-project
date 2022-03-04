@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useCookies } from 'react-cookie';
 
 function Copyright() {
   return (
@@ -36,10 +37,10 @@ const theme = createTheme();
 
 export default function Album() {
   const navigate = useNavigate()
+  const [cookies, setCookie] = useCookies(['access_token']);
 
   const logout = () => {
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('user')
+    setCookie('access_token', '', { path: '/' })
     navigate('/')
   }
 
