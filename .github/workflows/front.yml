@@ -19,7 +19,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    # instalar node
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.2.0
       with:

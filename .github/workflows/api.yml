@@ -1,4 +1,4 @@
-name: Upload EC2 API
+name: Upload API Gateway
 
 on:
   push:
@@ -17,10 +17,18 @@ jobs:
     - name: Get Code Latest Version
       uses: actions/checkout@v2 
     
-    - name: Serverless deploy
-      uses: serverless/github-action@v3
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.2.0
       with:
-        args: deploy --stage ${opt:stage, 'dev'} 
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        node-version: 14.x
+
+    - name: Install Serverless Framework
+      run: npm install -g serverless
+
+    - name: Serverless Authentication
+      run: sls config credentials --provider aws --key ${{secrets.AWS_ACCESS_KEY_ID}} --secret ${{secrets.AWS_SECRET_ACCESS_KEY}}
+
+    - name: Deploy to AWS
+      run: |
+        cd api
+        serverless deploy
