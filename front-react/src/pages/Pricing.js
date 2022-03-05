@@ -97,10 +97,10 @@ const footers = [
 
 function PricingContent() {
   const navigate = useNavigate()
-  const [, setCookie] = useCookies(['access_token']);
+  const [,, removeCookie] = useCookies(['access_token']);
 
   const logout = () => {
-    setCookie('access_token', '', { path: '/' })
+    removeCookie('access_token', { path: '/' })
     navigate('/')
   }
 
